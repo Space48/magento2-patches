@@ -1,13 +1,15 @@
 {
     "name": "space48/magento2-patches",
     "description": "A collection of patches for core Magento2",
-    "type": "magento2-patch",
     "authors": [
         {
             "name": "DanCarlyon",
             "email": "dan.carlyon@space48.com"
         }
     ],
+    "require": {
+        "netresearch/composer-patches-plugin": "^1.2.1"
+    },
     "extra": {
         "patches": {
             "vendor/magento": {
