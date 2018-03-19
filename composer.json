@@ -13,7 +13,7 @@
     "extra": {
         "patches": {
             "magento/framework": {
-                "2.*": [
+                "100.*": [
                     {
                         "title": "Save relative paths for configuration files in Magento cache",
                         "url": "https://raw.githubusercontent.com/Space48/magento2-patches/cachePathsPatch/patches/factory.diff"
