@@ -12,11 +12,11 @@
     },
     "extra": {
         "patches": {
-            "vendor/magento": {
+            "magento/framework": {
                 "2.*": [
                     {
                         "title": "Save relative paths for configuration files in Magento cache",
-                        "url": "/patches/factory.diff"
+                        "url": "patches/factory.diff"
                     }
                 ]
             }
