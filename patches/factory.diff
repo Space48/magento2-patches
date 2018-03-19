@@ -1,7 +1,7 @@
-diff --git a/vendor/magento/framework/Validator/Factory.php b/vendor/magento/framework/Validator/Factory.php
+diff --git a/Validator/Factory.php b/Validator/Factory.php
 index 5e1d316..b3a7e57 100644
---- a/vendor/magento/framework/Validator/Factory.php
-+++ b/vendor/magento/framework/Validator/Factory.php
+--- a/Validator/Factory.php
++++ b/Validator/Factory.php
 @@ -10,7 +10,9 @@
  
  namespace Magento\Framework\Validator;
