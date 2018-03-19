@@ -14,7 +14,7 @@
                 "2.*": [
                     {
                         "title": "Save relative paths for configuration files in Magento cache",
-                        "url": "vendor/magento/framework/Validator/Factory.diff"
+                        "url": "patches/factory.diff"
                     }
                 ]
             }
