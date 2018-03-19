@@ -1,3 +1,17 @@
 {
-    "name": "space48/magento2-patches"
+    "name": "space48/magento2-patches",
+    "version": "1.0.0",
+    "description": "A collection of patches for core Magento2",
+    "extra": {
+        "patches": {
+            "vendor/magento": {
+                "2.*": [
+                    {
+                        "title": "Save relative paths for configuration files in Magento cache",
+                        "url": "vendor/magento/framework/Validator/Factory.diff"
+                    }
+                ]
+            }
+        }
+    }
 }
