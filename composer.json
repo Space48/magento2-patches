@@ -1,6 +1,5 @@
 {
     "name": "space48/magento2-patches",
-    "version": "1.0.1",
     "description": "A collection of patches for core Magento2",
     "type": "magento2-patch",
     "authors": [
