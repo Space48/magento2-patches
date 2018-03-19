@@ -2,6 +2,13 @@
     "name": "space48/magento2-patches",
     "version": "1.0.0",
     "description": "A collection of patches for core Magento2",
+    "type": "magento2-patch",
+    "authors": [
+        {
+            "name": "DanCarlyon",
+            "email": "dan.carlyon@space48.com"
+        }
+    ],
     "extra": {
         "patches": {
             "vendor/magento": {
