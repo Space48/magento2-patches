@@ -8,17 +8,14 @@
         }
     ],
     "require": {
-        "netresearch/composer-patches-plugin": "^1.2.1"
+        "vaimo/composer-patches": "^3.24.1"
     },
     "extra": {
         "patches": {
             "magento/framework": {
-                "100.*": [
-                    {
-                        "title": "Save relative paths for configuration files in Magento cache",
-                        "url": "patches/factory.diff"
-                    }
-                ]
+                "Save relative paths for configuration files in Magento cache": {
+                    "100.*" : "patches/factory.diff"
+                }
             }
         }
     }
