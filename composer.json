@@ -15,7 +15,10 @@
         "patches": {
             "magento/framework": {
                 "Save relative paths for configuration files in Magento cache": {
-                    "100.*" : "Magento_Framework/Validator/factory.patch"
+                    "source" : "Magento_Framework/Validator/factory.patch",
+                    "version" : [
+                        "100.*"
+                    ]
                 }
             }
         }
