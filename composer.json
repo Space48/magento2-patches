@@ -1,3 +1,25 @@
 {
-    "name": "space48/magento2-patches"
+    "name": "space48/magento2-patches",
+    "description": "A collection of patches for core Magento2",
+    "authors": [
+        {
+            "name": "DanCarlyon",
+            "email": "dan.carlyon@space48.com"
+        }
+    ],
+    "require": {
+        "vaimo/composer-patches": "^3.24.1"
+    },
+    "extra": {
+        "patches": {
+            "magento/framework": {
+                "Save relative paths for configuration files in Magento cache": {
+                    "source" : "patches/Magento_Framework/Validator/factory.patch",
+                    "version" : [
+                        "100.*"
+                    ]
+                }
+            }
+        }
+    }
 }
