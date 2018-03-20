@@ -11,11 +11,10 @@
         "vaimo/composer-patches": "^3.24.1"
     },
     "extra": {
-        "patches-base": "patches",
         "patches": {
             "magento/framework": {
                 "Save relative paths for configuration files in Magento cache": {
-                    "source" : "Magento_Framework/Validator/factory.patch",
+                    "source" : "patches/Magento_Framework/Validator/factory.patch",
                     "version" : [
                         "100.*"
                     ]
