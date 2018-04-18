@@ -19,6 +19,14 @@
                         "100.*"
                     ]
                 }
+            },
+            "magento/module-braintree": {
+                "Only loop through braintree configs if it is an array": {
+                    "source" : "patches/Magento_Braintree/magento2-issue-12298.patch",
+                    "version" : [
+                        "100.2.*"
+                    ]
+                }
             }
         }
     }

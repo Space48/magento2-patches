@@ -1,0 +1,37 @@
+diff --git a/Model/Adminhtml/System/Config/CountryCreditCard.php b/Model/Adminhtml/System/Config/CountryCreditCard.php
+index f68b7eca047..1b6fb25d06f 100644
+--- a/Model/Adminhtml/System/Config/CountryCreditCard.php
++++ b/Model/Adminhtml/System/Config/CountryCreditCard.php
+@@ -67,17 +67,23 @@ class CountryCreditCard extends Value
+     {
+         $value = $this->getValue();
+         $result = [];
+-        foreach ($value as $data) {
+-            if (empty($data['country_id']) || empty($data['cc_types'])) {
+-                continue;
+-            }
+-            $country = $data['country_id'];
+-            if (array_key_exists($country, $result)) {
+-                $result[$country] = $this->appendUniqueCountries($result[$country], $data['cc_types']);
+-            } else {
+-                $result[$country] = $data['cc_types'];
++        /**
++         * @see https://github.com/magento/magento2/issues/12298
++         */
++        if (is_array($value)) {
++            foreach ($value as $data) {
++                if (empty($data['country_id']) || empty($data['cc_types'])) {
++                    continue;
++                }
++                $country = $data['country_id'];
++                if (array_key_exists($country, $result)) {
++                    $result[$country] = $this->appendUniqueCountries($result[$country], $data['cc_types']);
++                } else {
++                    $result[$country] = $data['cc_types'];
++                }
+             }
+         }
++
+         $this->setValue($this->serializer->serialize($result));
+         return $this;
+     }
