@@ -1,7 +1,7 @@
-diff --git a/app/code/Magento/Braintree/Model/Adminhtml/System/Config/CountryCreditCard.php b/app/code/Magento/Braintree/Model/Adminhtml/System/Config/CountryCreditCard.php
+diff --git a/Model/Adminhtml/System/Config/CountryCreditCard.php b/Model/Adminhtml/System/Config/CountryCreditCard.php
 index f68b7eca047..1b6fb25d06f 100644
---- a/app/code/Magento/Braintree/Model/Adminhtml/System/Config/CountryCreditCard.php
-+++ b/app/code/Magento/Braintree/Model/Adminhtml/System/Config/CountryCreditCard.php
+--- a/Model/Adminhtml/System/Config/CountryCreditCard.php
++++ b/Model/Adminhtml/System/Config/CountryCreditCard.php
 @@ -67,17 +67,23 @@ class CountryCreditCard extends Value
      {
          $value = $this->getValue();
