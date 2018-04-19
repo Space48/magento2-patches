@@ -27,6 +27,14 @@
                         "100.2.*"
                     ]
                 }
+            },
+            "magento/module-configurableproduct": {
+                "Add frontend validation for SKU on configurable product variation generation in admin panel": {
+                    "source" : "patches/Magento_ConfigurableProduct/magento2-issue-11953.patch",
+                    "version" : [
+                        "100.2.*"
+                    ]
+                }
             }
         }
     }
