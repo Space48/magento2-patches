@@ -1,0 +1,69 @@
+From 5cf0d3480fcc302f922fce12a588afd5e5771491 Mon Sep 17 00:00:00 2001
+From: "a.muntian" <a.muntian@astoundcommerce.com>
+Date: Fri, 15 Dec 2017 13:54:04 +0200
+Subject: [PATCH 1/2] magento/magento2#11953: Product configuration creator
+ does not warn about invalid SKUs - Added validation for SKU field inside
+ "Configurations" tab
+
+---
+ .../DataProvider/Product/Form/Modifier/ConfigurablePanel.php | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
+
+diff --git a/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php b/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php
+index 0e03dfe3cde5..f1d67eee8e6d 100644
+--- a/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php
++++ b/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php
+@@ -466,7 +466,17 @@ protected function getRows()
+                         [],
+                         ['dataScope' => 'product_link']
+                     ),
+-                    'sku_container' => $this->getColumn('sku', __('SKU')),
++                    'sku_container' => $this->getColumn(
++                        'sku',
++                        __('SKU'),
++                        [
++                            'validation' =>
++                                [
++                                    'min_text_length' => '1',
++                                    'max_text_length' => '10',
++                                ]
++                        ]
++                    ),
+                     'price_container' => $this->getColumn(
+                         'price',
+                         __('Price'),
+
+From 7418f1ac607c68003c2f4122f2b1bf07a35c044e Mon Sep 17 00:00:00 2001
+From: zamoroka <zapashok0@gmail.com>
+Date: Fri, 15 Dec 2017 14:19:27 +0200
+Subject: [PATCH 2/2] magento/magento2#11953: Product configuration creator
+ does not warn about invalid SKUs  - Make sku field as required  - Length of
+ sku gets from Sku model
+
+---
+ .../Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php      | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
+
+diff --git a/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php b/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php
+index f1d67eee8e6d..9fd225e8acaa 100644
+--- a/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php
++++ b/Ui/DataProvider/Product/Form/Modifier/ConfigurablePanel.php
+@@ -5,6 +5,7 @@
+  */
+ namespace Magento\ConfigurableProduct\Ui\DataProvider\Product\Form\Modifier;
+ 
++use Magento\Catalog\Model\Product\Attribute\Backend\Sku;
+ use Magento\Catalog\Ui\DataProvider\Product\Form\Modifier\AbstractModifier;
+ use Magento\Ui\Component\Container;
+ use Magento\Ui\Component\Form;
+@@ -472,8 +473,8 @@ protected function getRows()
+                         [
+                             'validation' =>
+                                 [
+-                                    'min_text_length' => '1',
+-                                    'max_text_length' => '10',
++                                    'required-entry' => true,
++                                    'max_text_length' => Sku::SKU_MAX_LENGTH,
+                                 ]
+                         ]
+                     ),
