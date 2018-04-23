@@ -8,7 +8,7 @@ to apply them to your code base.
 
 ## Installation
 
-`composer require space48/magento2-patches`
+`composer require space48/magento2-patches:dev-master`
 
 
 ## Add a patch
