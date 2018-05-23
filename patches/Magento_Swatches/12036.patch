@@ -1,0 +1,24 @@
+diff --git a/Model/Plugin/EavAttribute.php b/Model/Plugin/EavAttribute.php
+index f363ffe70e80..599406f45528 100644
+--- a/Model/Plugin/EavAttribute.php
++++ b/Model/Plugin/EavAttribute.php
+@@ -130,9 +130,17 @@ protected function setProperOptionsArray(Attribute $attribute)
+             $swatchesArray = $attribute->getData('swatchtext');
+         }
+         if ($canReplace == true) {
+-            $attribute->setData('option', $optionsArray);
+-            $attribute->setData('default', $defaultValue);
+-            $attribute->setData('swatch', $swatchesArray);
++            if (!empty($optionsArray)) {
++                $attribute->setData('option', $optionsArray);
++            }
++            if (!empty($defaultValue)) {
++                $attribute->setData('default', $defaultValue);
++            } else {
++                $attribute->setData('default', [0 => $attribute->getDefaultValue()]);
++            }
++            if (!empty($swatchesArray)) {
++                $attribute->setData('swatch', $swatchesArray);
++            }
+         }
+     }
