@@ -35,6 +35,14 @@
                         "100.2.*"
                     ]
                 }
+            },
+            "magento/module-swatches": {
+                "prevent attribute beforesave plugin from nulling attribute options": {
+                    "source" : "patches/Magento_Swatches/12036.patch",
+                    "version" : [
+                        "100.2.*"
+                    ]
+                }
             }
         }
     }
