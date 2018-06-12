@@ -28,6 +28,14 @@
                     ]
                 }
             },
+            "magento/module-checkout": {
+                "Ensure that each billing address form DOM element has a unique id https://github.com/magento/magento2/pull/15349": {
+                    "source" : "patches/Magento_Checkout/billing-address-form.patch",
+                    "version" : [
+                        "100.2.*"
+                    ]
+                }
+            },
             "magento/module-configurable-product": {
                 "Add frontend validation for SKU on configurable product variation generation in admin panel": {
                     "source" : "patches/Magento_ConfigurableProduct/magento2-issue-11953.patch",
