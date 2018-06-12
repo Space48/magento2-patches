@@ -1,0 +1,13 @@
+diff --git a/view/frontend/web/template/billing-address/form.html b/view/frontend/web/template/billing-address/form.html
+index 1be754934042..00f87d325d96 100644
+--- a/view/frontend/web/template/billing-address/form.html
++++ b/view/frontend/web/template/billing-address/form.html
+@@ -9,7 +9,7 @@
+     <!-- ko template: getTemplate() --><!-- /ko -->
+     <!--/ko-->
+     <form data-bind="attr: {'data-hasrequired': $t('* Required Fields')}">
+-        <fieldset id="billing-new-address-form" class="fieldset address">
++        <fieldset data-bind="attr: { id:'billing-new-address-form-'+index, value:index}" class="fieldset address">
+             <!-- ko foreach: getRegion('additional-fieldsets') -->
+             <!-- ko template: getTemplate() --><!-- /ko -->
+             <!--/ko-->
