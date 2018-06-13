@@ -1,0 +1,145 @@
+diff --git a/Model/Express.php b/Model/Express.php
+index 8ba8adcede51..accb22b26533 100644
+--- a/Model/Express.php
++++ b/Model/Express.php
+@@ -669,7 +669,7 @@ public function getApi()
+     public function assignData(\Magento\Framework\DataObject $data)
+     {
+         parent::assignData($data);
+-
++
+         $additionalData = $data->getData(PaymentInterface::KEY_ADDITIONAL_DATA);
+
+         if (!is_array($additionalData)) {
+@@ -677,6 +677,11 @@ public function assignData(\Magento\Framework\DataObject $data)
+         }
+
+         foreach ($additionalData as $key => $value) {
++            // Skip extension attributes
++            if ($key === \Magento\Framework\Api\ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY) {
++                continue;
++            }
++
+             $this->getInfoInstance()->setAdditionalInformation($key, $value);
+         }
+         return $this;
+diff --git a/Test/Unit/Model/ExpressTest.php b/Test/Unit/Model/ExpressTest.php
+index 6a2d33d01019..3d224262c99f 100644
+--- a/Test/Unit/Model/ExpressTest.php
++++ b/Test/Unit/Model/ExpressTest.php
+@@ -161,12 +161,21 @@ public function testAssignData()
+     {
+         $transportValue = 'something';
+
++        $extensionAttributeMock = $this->getMockForAbstractClass(
++            \Magento\Quote\Api\Data\PaymentExtensionInterface::class,
++            [],
++            '',
++            false,
++            false
++        );
++
+         $data = new DataObject(
+             [
+                 PaymentInterface::KEY_ADDITIONAL_DATA => [
+                     Express\Checkout::PAYMENT_INFO_TRANSPORT_BILLING_AGREEMENT => $transportValue,
+                     Express\Checkout::PAYMENT_INFO_TRANSPORT_PAYER_ID => $transportValue,
+-                    Express\Checkout::PAYMENT_INFO_TRANSPORT_TOKEN => $transportValue
++                    Express\Checkout::PAYMENT_INFO_TRANSPORT_TOKEN => $transportValue,
++                    \Magento\Framework\Api\ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY => $extensionAttributeMock
+                 ]
+             ]
+         );
+diff --git a/view/frontend/web/js/action/set-payment-method.js b/view/frontend/web/js/action/set-payment-method.js
+index a994f9defd58..650d5794a244 100644
+--- a/view/frontend/web/js/action/set-payment-method.js
++++ b/view/frontend/web/js/action/set-payment-method.js
+@@ -10,42 +10,12 @@ define([
+     'mage/storage',
+     'Magento_Checkout/js/model/error-processor',
+     'Magento_Customer/js/model/customer',
+-    'Magento_Checkout/js/model/full-screen-loader'
+-], function ($, quote, urlBuilder, storage, errorProcessor, customer, fullScreenLoader) {
++    'Magento_Checkout/js/model/full-screen-loader',
++    'Magento_Checkout/js/action/set-payment-information'
++], function ($, quote, urlBuilder, storage, errorProcessor, customer, fullScreenLoader, setPaymentInformation) {
+     'use strict';
+
+     return function (messageContainer) {
+-        var serviceUrl,
+-            payload,
+-            paymentData = quote.paymentMethod();
+-
+-        /**
+-         * Checkout for guest and registered customer.
+-         */
+-        if (!customer.isLoggedIn()) {
+-            serviceUrl = urlBuilder.createUrl('/guest-carts/:cartId/set-payment-information', {
+-                cartId: quote.getQuoteId()
+-            });
+-            payload = {
+-                cartId: quote.getQuoteId(),
+-                email: quote.guestEmail,
+-                paymentMethod: paymentData
+-            };
+-        } else {
+-            serviceUrl = urlBuilder.createUrl('/carts/mine/set-payment-information', {});
+-            payload = {
+-                cartId: quote.getQuoteId(),
+-                paymentMethod: paymentData
+-            };
+-        }
+-        fullScreenLoader.startLoader();
+-
+-        return storage.post(
+-            serviceUrl, JSON.stringify(payload)
+-        ).fail(function (response) {
+-            errorProcessor.process(response, messageContainer);
+-        }).always(function () {
+-            fullScreenLoader.stopLoader();
+-        });
++        return setPaymentInformation(messageContainer, quote.paymentMethod());
+     };
+diff --git a/Test/Unit/Model/ExpressTest.php b/Test/Unit/Model/ExpressTest.php
+index 3d224262c99f..1b8c33622e78 100644
+--- a/Test/Unit/Model/ExpressTest.php
++++ b/Test/Unit/Model/ExpressTest.php
+@@ -161,7 +161,7 @@ public function testAssignData()
+     {
+         $transportValue = 'something';
+
+-        $extensionAttributeMock = $this->getMockForAbstractClass(
++        $extensionAttribute = $this->getMockForAbstractClass(
+             \Magento\Quote\Api\Data\PaymentExtensionInterface::class,
+             [],
+             '',
+@@ -175,7 +175,7 @@ public function testAssignData()
+                     Express\Checkout::PAYMENT_INFO_TRANSPORT_BILLING_AGREEMENT => $transportValue,
+                     Express\Checkout::PAYMENT_INFO_TRANSPORT_PAYER_ID => $transportValue,
+                     Express\Checkout::PAYMENT_INFO_TRANSPORT_TOKEN => $transportValue,
+-                    \Magento\Framework\Api\ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY => $extensionAttributeMock
++                    \Magento\Framework\Api\ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY => $extensionAttribute
+                 ]
+             ]
+         );
+diff --git a/view/frontend/web/js/action/set-payment-method.js b/view/frontend/web/js/action/set-payment-method.js
+index feb2538b0517..63e34437c6f9 100644
+--- a/view/frontend/web/js/action/set-payment-method.js
++++ b/view/frontend/web/js/action/set-payment-method.js
+@@ -4,15 +4,9 @@
+  */
+
+ define([
+-    'jquery',
+     'Magento_Checkout/js/model/quote',
+-    'Magento_Checkout/js/model/url-builder',
+-    'mage/storage',
+-    'Magento_Checkout/js/model/error-processor',
+-    'Magento_Customer/js/model/customer',
+-    'Magento_Checkout/js/model/full-screen-loader',
+     'Magento_Checkout/js/action/set-payment-information'
+-], function ($, quote, urlBuilder, storage, errorProcessor, customer, fullScreenLoader, setPaymentInformation) {
++], function (quote, setPaymentInformation) {
+     'use strict';
+
+     return function (messageContainer) {

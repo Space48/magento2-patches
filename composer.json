@@ -44,6 +44,14 @@
                     ]
                 }
             },
+            "magento/module-paypal": {
+                "Fix Paypal Checkout Agreements https://github.com/magento/magento2/issues/11885": {
+                    "source" : "patches/Magento_Paypal/paypal-express-checkout-agreements.patch",
+                    "version" : [
+                        "100.2.*"
+                    ]
+                }
+            },
             "magento/module-swatches": {
                 "prevent attribute beforesave plugin from nulling attribute options": {
                     "source" : "patches/Magento_Swatches/12036.patch",
