@@ -1,7 +1,5 @@
-diff --git a/Model/Express.php b/Model/Express.php
-index 8ba8adcede51..accb22b26533 100644
---- a/Model/Express.php
-+++ b/Model/Express.php
+--- Model/Express.php
++++ Model/Express.php
 @@ -669,7 +669,7 @@ public function getApi()
      public function assignData(\Magento\Framework\DataObject $data)
      {
@@ -24,10 +22,8 @@ index 8ba8adcede51..accb22b26533 100644
          }
          return $this;
 
-diff --git a/Test/Unit/Model/ExpressTest.php b/Test/Unit/Model/ExpressTest.php
-index 6a2d33d01019..3d224262c99f 100644
---- a/Test/Unit/Model/ExpressTest.php
-+++ b/Test/Unit/Model/ExpressTest.php
+--- Test/Unit/Model/ExpressTest.php
++++ Test/Unit/Model/ExpressTest.php
 @@ -161,12 +161,21 @@ public function testAssignData()
      {
          $transportValue = 'something';
@@ -52,10 +48,8 @@ index 6a2d33d01019..3d224262c99f 100644
              ]
          );
 
-diff --git a/view/frontend/web/js/action/set-payment-method.js b/view/frontend/web/js/action/set-payment-method.js
-index a994f9defd58..650d5794a244 100644
---- a/view/frontend/web/js/action/set-payment-method.js
-+++ b/view/frontend/web/js/action/set-payment-method.js
+--- view/frontend/web/js/action/set-payment-method.js
++++ view/frontend/web/js/action/set-payment-method.js
 @@ -10,42 +10,12 @@ define([
      'mage/storage',
      'Magento_Checkout/js/model/error-processor',
@@ -105,10 +99,8 @@ index a994f9defd58..650d5794a244 100644
 -});
 +});
 
-diff --git a/view/frontend/web/js/action/set-payment-method.js b/view/frontend/web/js/action/set-payment-method.js
-index 650d5794a244..feb2538b0517 100644
---- a/view/frontend/web/js/action/set-payment-method.js
-+++ b/view/frontend/web/js/action/set-payment-method.js
+--- view/frontend/web/js/action/set-payment-method.js
++++ view/frontend/web/js/action/set-payment-method.js
 @@ -18,4 +18,4 @@ define([
      return function (messageContainer) {
          return setPaymentInformation(messageContainer, quote.paymentMethod());
@@ -116,10 +108,8 @@ index 650d5794a244..feb2538b0517 100644
 -});
 \ No newline at end of file
 +});
-diff --git a/Test/Unit/Model/ExpressTest.php b/Test/Unit/Model/ExpressTest.php
-index 3d224262c99f..1b8c33622e78 100644
---- a/Test/Unit/Model/ExpressTest.php
-+++ b/Test/Unit/Model/ExpressTest.php
+--- Test/Unit/Model/ExpressTest.php
++++ Test/Unit/Model/ExpressTest.php
 @@ -161,7 +161,7 @@ public function testAssignData()
      {
          $transportValue = 'something';
@@ -139,10 +129,8 @@ index 3d224262c99f..1b8c33622e78 100644
              ]
          );
 
-diff --git a/view/frontend/web/js/action/set-payment-method.js b/view/frontend/web/js/action/set-payment-method.js
-index feb2538b0517..63e34437c6f9 100644
---- a/view/frontend/web/js/action/set-payment-method.js
-+++ b/view/frontend/web/js/action/set-payment-method.js
+--- view/frontend/web/js/action/set-payment-method.js
++++ view/frontend/web/js/action/set-payment-method.js
 @@ -4,15 +4,9 @@
   */
  
