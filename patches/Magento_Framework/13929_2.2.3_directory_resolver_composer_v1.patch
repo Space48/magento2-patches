@@ -1,0 +1,11 @@
+--- App/Filesystem/DirectoryResolver.php	(date 1521531005000)
++++ App/Filesystem/DirectoryResolver.php	(date 1521561205000)
+@@ -39,7 +39,7 @@
+     public function validatePath($path, $directoryConfig = DirectoryList::MEDIA)
+     {
+         $realPath = realpath($path);
+-        $root = $this->directoryList->getPath($directoryConfig);
++        $root = realpath($this->directoryList->getPath($directoryConfig));
+         
+         return strpos($realPath, $root) === 0;
+     }

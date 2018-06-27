@@ -20,6 +20,14 @@
                     ]
                 }
             },
+            "magento/framework": {
+                "Allow for uploads to media directory if it is a symlink https://github.com/magento/magento2/issues/13929": {
+                    "source" : "patches/Magento_Framework/13929_2.2.3_directory_resolver_composer_v1.patch",
+                    "version" : [
+                        "100.2.*"
+                    ]
+                }
+            },
             "magento/module-braintree": {
                 "Only loop through braintree configs if it is an array": {
                     "source" : "patches/Magento_Braintree/magento2-issue-12298.patch",
