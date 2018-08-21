@@ -1,7 +1,7 @@
-diff --git a/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php b/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php
+diff --git a/Observer/ProcessCronQueueObserver.php b/Observer/ProcessCronQueueObserver.php
 index 0066009..c143b23 100644
---- a/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php
-+++ b/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php
+--- a/Observer/ProcessCronQueueObserver.php
++++ b/Observer/ProcessCronQueueObserver.php
 @@ -15,6 +15,7 @@ use Magento\Framework\Event\ObserverInterface;
  use \Magento\Cron\Model\Schedule;
  use Magento\Framework\Profiler\Driver\Standard\Stat;
@@ -50,10 +50,10 @@ index 0066009..c143b23 100644
 +        return $this->scheduleResource;
 +    }
  }
-diff --git a/vendor/magento/module-cron/Model/ResourceModel/Schedule.php b/vendor/magento/module-cron/Model/ResourceModel/Schedule.php
+diff --git a/Model/ResourceModel/Schedule.php b/Model/ResourceModel/Schedule.php
 index 25dd02c..80cb763 100644
---- a/vendor/magento/module-cron/Model/ResourceModel/Schedule.php
-+++ b/vendor/magento/module-cron/Model/ResourceModel/Schedule.php
+--- a/Model/ResourceModel/Schedule.php
++++ b/Model/ResourceModel/Schedule.php
 @@ -5,6 +5,8 @@
   */
  namespace Magento\Cron\Model\ResourceModel;
@@ -100,11 +100,11 @@ index 25dd02c..80cb763 100644
 +        }
 +    }
  }
-diff --git a/vendor/magento/module-cron/Setup/UpgradeSchema.php b/vendor/magento/module-cron/Setup/UpgradeSchema.php
+diff --git a/Setup/UpgradeSchema.php b/Setup/UpgradeSchema.php
 new file mode 100644
 index 0000000..f5766d4
 --- /dev/null
-+++ b/vendor/magento/module-cron/Setup/UpgradeSchema.php
++++ b/Setup/UpgradeSchema.php
 @@ -0,0 +1,47 @@
 +<?php
 +/**
@@ -153,10 +153,10 @@ index 0000000..f5766d4
 +        return $this;
 +    }
 +}
-diff --git a/vendor/magento/module-cron/etc/module.xml b/vendor/magento/module-cron/etc/module.xml
+diff --git a/etc/module.xml b/etc/module.xml
 index ce31b04..b013a15 100644
---- a/vendor/magento/module-cron/etc/module.xml
-+++ b/vendor/magento/module-cron/etc/module.xml
+--- a/etc/module.xml
++++ b/etc/module.xml
 @@ -6,7 +6,7 @@
   */
  -->
