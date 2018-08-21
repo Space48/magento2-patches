@@ -59,6 +59,14 @@
                         "100.2.*"
                     ]
                 }
+            },
+            "magento/module-cron": {
+                "prevent duplicate entries in the cron_schedule table https://github.com/magento/magento2/issues/12602": {
+                    "source": "patches/Magento_Cron/duplicate-cron-schedule-entries-magento2-12602.patch",
+                    "version": [
+                        "100.2.*"
+                    ]
+                }
             }
         }
     }
