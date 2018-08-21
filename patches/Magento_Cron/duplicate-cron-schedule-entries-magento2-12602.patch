@@ -1,0 +1,168 @@
+diff --git a/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php b/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php
+index 0066009..c143b23 100644
+--- a/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php
++++ b/vendor/magento/module-cron/Observer/ProcessCronQueueObserver.php
+@@ -15,6 +15,7 @@ use Magento\Framework\Event\ObserverInterface;
+ use \Magento\Cron\Model\Schedule;
+ use Magento\Framework\Profiler\Driver\Standard\Stat;
+ use Magento\Framework\Profiler\Driver\Standard\StatFactory;
++use Magento\Cron\Model\ResourceModel\Schedule as ScheduleResource;
+ 
+ /**
+  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
+@@ -134,6 +135,11 @@ class ProcessCronQueueObserver implements ObserverInterface
+     private $statProfiler;
+ 
+     /**
++     * @var ScheduleResource
++     */
++    protected $scheduleResource;
++
++    /**
+      * @param \Magento\Framework\ObjectManagerInterface $objectManager
+      * @param \Magento\Cron\Model\ScheduleFactory $scheduleFactory
+      * @param \Magento\Framework\App\CacheInterface $cache
+@@ -505,7 +511,7 @@ class ProcessCronQueueObserver implements ObserverInterface
+             }
+             if (!$alreadyScheduled) {
+                 // time matches cron expression
+-                $schedule->save();
++                $this->getScheduleResource()->add($schedule);
+             }
+         }
+     }
+@@ -704,4 +710,18 @@ class ProcessCronQueueObserver implements ObserverInterface
+             $schedule->save();
+         }
+     }
++
++    /**
++     * Get resource model for Schedule model
++     *
++     * @return ScheduleResource
++     */
++    private function getScheduleResource()
++    {
++        if (empty($this->scheduleResource)) {
++            $this->scheduleResource = $this->_scheduleFactory->create()->getResource();
++        }
++
++        return $this->scheduleResource;
++    }
+ }
+diff --git a/vendor/magento/module-cron/Model/ResourceModel/Schedule.php b/vendor/magento/module-cron/Model/ResourceModel/Schedule.php
+index 25dd02c..80cb763 100644
+--- a/vendor/magento/module-cron/Model/ResourceModel/Schedule.php
++++ b/vendor/magento/module-cron/Model/ResourceModel/Schedule.php
+@@ -5,6 +5,8 @@
+  */
+ namespace Magento\Cron\Model\ResourceModel;
+ 
++use Magento\Cron\Model\Schedule as ScheduleModel;
++
+ /**
+  * Schedule resource
+  *
+@@ -14,6 +16,11 @@ namespace Magento\Cron\Model\ResourceModel;
+ class Schedule extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+ {
+     /**
++     * Code of "Integrity constraint violation: 1062 Duplicate entry" error
++     */
++    const ERROR_CODE_DUPLICATE_ENTRY = 23000;
++
++    /**
+      * Initialize resource
+      *
+      * @return void
+@@ -92,4 +99,24 @@ class Schedule extends \Magento\Framework\Model\ResourceModel\Db\AbstractDb
+         }
+         return false;
+     }
++
++    /**
++     * Add schedule
++     *
++     * @param ScheduleModel $schedule
++     * @throws \Exception
++     */
++    public function add(ScheduleModel $schedule)
++    {
++        try {
++            $this->save($schedule);
++        } catch (\Exception $e) {
++            // Skip scheduling existing tasks
++            if ($e->getCode() !== self::ERROR_CODE_DUPLICATE_ENTRY
++                && preg_match('#SQLSTATE\[23000\]: [^:]+: 1062[^\d]#', $e->getMessage()) === false
++            ) {
++                throw $e;
++            }
++        }
++    }
+ }
+diff --git a/vendor/magento/module-cron/Setup/UpgradeSchema.php b/vendor/magento/module-cron/Setup/UpgradeSchema.php
+new file mode 100644
+index 0000000..f5766d4
+--- /dev/null
++++ b/vendor/magento/module-cron/Setup/UpgradeSchema.php
+@@ -0,0 +1,47 @@
++<?php
++/**
++ * Copyright © 2016 Magento. All rights reserved.
++ * See COPYING.txt for license details.
++ */
++namespace Magento\Cron\Setup;
++
++use Magento\Framework\Setup\UpgradeSchemaInterface;
++use Magento\Framework\Setup\ModuleContextInterface;
++use Magento\Framework\Setup\SchemaSetupInterface;
++
++/**
++ * Upgrade the Cron module DB scheme
++ */
++class UpgradeSchema implements UpgradeSchemaInterface
++{
++    /**
++     * {@inheritdoc}
++     */
++    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
++    {
++        if (version_compare($context->getVersion(), '2.0.0.1', '<')) {
++            $this->addUniqueIndex($setup);
++        }
++    }
++
++    /**
++     * Add unique index
++     *
++     * @param SchemaSetupInterface $setup
++     * @return $this
++     */
++    protected function addUniqueIndex(SchemaSetupInterface $setup)
++    {
++        $setup->getConnection()->addIndex(
++            $setup->getTable('cron_schedule'),
++            $setup->getIdxName('cron_schedule',
++                ['job_code', 'scheduled_at'],
++                \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
++            ),
++            ['job_code', 'scheduled_at'],
++            \Magento\Framework\DB\Adapter\AdapterInterface::INDEX_TYPE_UNIQUE
++        );
++
++        return $this;
++    }
++}
+diff --git a/vendor/magento/module-cron/etc/module.xml b/vendor/magento/module-cron/etc/module.xml
+index ce31b04..b013a15 100644
+--- a/vendor/magento/module-cron/etc/module.xml
++++ b/vendor/magento/module-cron/etc/module.xml
+@@ -6,7 +6,7 @@
+  */
+ -->
+ <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Module/etc/module.xsd">
+-    <module name="Magento_Cron" setup_version="2.0.0">
++    <module name="Magento_Cron" setup_version="2.0.0.1">
+         <sequence>
+             <module name="Magento_Store"/>
+         </sequence> 
