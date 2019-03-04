@@ -28,6 +28,16 @@
                     ]
                 }
             },
+            "magento/module-catalog": {
+                "Fix for special price being populated with random dates": {
+                    "source" : "patches/Magento_Catalog/MDVA-11605_EE_2.2.2_COMPOSER_v1.patch",
+                    "version" : ["102.0.3"]
+                },
+                "Fix for Update On Save Reindex do not work on configurable 12667": {
+                    "source" : "patches/Magento_Catalog/magento2-issue-12667.patch",
+                    "version" : ["102.0.3"]
+                }
+            },
             "magento/module-braintree": {
                 "Only loop through braintree configs if it is an array": {
                     "source" : "patches/Magento_Braintree/magento2-issue-12298.patch",

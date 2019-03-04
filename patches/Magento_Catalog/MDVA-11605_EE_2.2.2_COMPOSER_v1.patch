@@ -1,0 +1,32 @@
+diff --git magento/module-catalog/Controller/Adminhtml/Product/Initialization/Helper.php magento/module-catalog/Controller/Adminhtml/Product/Initialization/Helper.php
+index beb6f2b13bc..b0e33fa549c 100644
+--- magento/module-catalog/Controller/Adminhtml/Product/Initialization/Helper.php
++++ magento/module-catalog/Controller/Adminhtml/Product/Initialization/Helper.php
+@@ -159,6 +159,7 @@ class Helper
+         }
+ 
+         $productData = $this->normalize($productData);
++        $productData = $this->convertSpecialFromDateStringToObject($productData);
+ 
+         if (!empty($productData['is_downloadable'])) {
+             $productData['product_has_weight'] = 0;
+@@ -467,4 +468,19 @@ class Helper
+ 
+         return $product->setOptions($customOptions);
+     }
++
++    /**
++     * Convert string date presentation into object
++     *
++     * @param array $productData
++     * @return array
++     */
++    private function convertSpecialFromDateStringToObject($productData)
++    {
++        if (isset($productData['special_from_date']) && $productData['special_from_date'] != '') {
++            $productData['special_from_date'] = new \DateTime($productData['special_from_date']);
++        }
++
++        return $productData;
++    }
+ }

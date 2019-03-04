@@ -1,0 +1,15 @@
+Index: Model/Indexer/Product/Eav/AbstractAction.php
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- Model/Indexer/Product/Eav/AbstractAction.php	(date 1549468058000)
++++ Model/Indexer/Product/Eav/AbstractAction.php	(date 1550075728000)
+@@ -143,6 +143,7 @@
+     protected function processRelations($indexer, $ids, $onlyParents = false)
+     {
+         $parentIds = $indexer->getRelationsByChild($ids);
++        $parentIds = array_unique(array_merge($parentIds, $ids));
+         $childIds = $onlyParents ? [] : $indexer->getRelationsByParent($parentIds);
+         return array_unique(array_merge($ids, $childIds, $parentIds));
+     }
